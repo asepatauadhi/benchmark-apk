@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1119"><title>ASEP LABS — APK Capability Benchmark</title>
+<style>
+:root{color-scheme:dark;--bg:#090e15;--panel:#121b27;--panel2:#182434;--line:#29394c;--txt:#edf4fc;--muted:#93a5b9;--green:#64e0ad;--yellow:#ffd078;--red:#ff8585}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:980px;margin:auto;padding:18px 14px 45px}.hero{padding:23px;border:1px solid var(--line);border-radius:20px;background:#121d2a}
+.kicker{font-size:10px;font-weight:900;letter-spacing:.16em;color:var(--green)}h1{font-size:clamp(27px,6vw,39px);line-height:1.08;margin:9px 0}.muted{color:var(--muted)}.hero p{margin:0}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}button{border:0;border-radius:11px;padding:11px 14px;font-weight:800;background:var(--green);color:#092117;cursor:pointer}button.alt{background:#2a3b50;color:var(--txt)}button:disabled{opacity:.45}
+.summary{display:grid;grid-template-columns:105px 1fr;gap:17px;align-items:center;padding:16px;margin:15px 0;background:var(--panel);border:1px solid var(--line);border-radius:17px}
+.ring{width:100px;height:100px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) 0deg,#2a394a 0deg);position:relative}.ring:before{content:"";position:absolute;inset:8px;border-radius:50%;background:var(--panel)}.ring div{position:relative;text-align:center}.ring b{font-size:27px}.ring small{display:block;color:var(--muted);font-size:10px}
+h2{font-size:17px;margin:24px 0 10px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.card{min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px}.head{display:flex;justify-content:space-between;align-items:center;gap:8px}.head b{font-size:13px}.badge{font-size:10px;font-weight:900;padding:3px 7px;border-radius:20px;background:#29394b;color:var(--muted);white-space:nowrap}.pass{background:#124332;color:#91f4c7}.fail{background:#48272b;color:#ffb0b0}.info{background:#49391e;color:#ffdc96}.card p{font-size:11px;color:var(--muted);margin:7px 0 0;overflow-wrap:anywhere}.card button{padding:7px 9px;font-size:11px;margin-top:9px}.wide{grid-column:1/-1}.meter{height:7px;background:#29394b;border-radius:20px;overflow:hidden;margin-top:11px}.meter span{display:block;height:100%;width:0;background:var(--green);transition:width .25s}
+.log{background:#070b10;border:1px solid var(--line);border-radius:12px;padding:12px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:250px;overflow:auto;color:#b9cadd;font:11px/1.6 ui-monospace,monospace}.note{font-size:11px;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap}.drop{border:1px dashed #58718c;border-radius:12px;padding:18px;text-align:center;color:var(--muted);margin-top:10px}.drop.over{border-color:var(--green);background:#123126}
+@media(max-width:550px){.grid{grid-template-columns:1fr}.summary{grid-template-columns:82px 1fr}.ring{width:80px;height:80px}.ring b{font-size:23px}}
+</style></head>
+<body><main>
+<section class="hero"><div class="kicker">ASEP LABS / WEBVIEW DIAGNOSTICS</div><h1>APK Capability Benchmark</h1><p class="muted">Paket pengujian lebih lengkap untuk mengecek seberapa banyak kemampuan browser/WebView yang tersedia setelah HTML dibungkus menjadi APK.</p><div class="row"><button id="run">Jalankan tes otomatis</button><button class="alt" id="reset">Reset semua hasil</button></div></section>
+<section class="summary"><div class="ring" id="ring"><div><b id="score">—</b><small>/ 100</small></div></div><div><b id="grade">Belum dites</b><div class="muted" id="summaryText">Jalankan tes otomatis, lalu lakukan tes manual yang memerlukan izin atau sentuhan.</div><div class="meter"><span id="progress"></span></div><div class="note" id="counts">0 / 30 tes dinilai</div></div></section>
+
+<h2>1. Browser & storage</h2><div class="grid">
+<div class="card" id="c-js"><div class="head"><b>JavaScript engine</b><span class="badge">WAIT</span></div><p>ES6+, Promise, async, fetch, WebAssembly.</p></div>
+<div class="card" id="c-storage"><div class="head"><b>LocalStorage</b><span class="badge">WAIT</span></div><p>Baca dan tulis data persisten.</p></div>
+<div class="card" id="c-session"><div class="head"><b>SessionStorage</b><span class="badge">WAIT</span></div><p>Penyimpanan selama sesi.</p></div>
+<div class="card" id="c-indexed"><div class="head"><b>IndexedDB</b><span class="badge">WAIT</span></div><p>Database lokal browser.</p></div>
+<div class="card" id="c-cache"><div class="head"><b>Cache API</b><span class="badge">WAIT</span></div><p>Cache Storage untuk aset offline.</p></div>
+<div class="card" id="c-cookies"><div class="head"><b>Cookies</b><span class="badge">WAIT</span></div><p>Dukungan cookie dan document.cookie.</p></div>
+<div class="card" id="c-history"><div class="head"><b>History API</b><span class="badge">WAIT</span></div><p>pushState dan replaceState.</p></div>
+<div class="card" id="c-url"><div class="head"><b>Blob / URL API</b><span class="badge">WAIT</span></div><p>Buat URL lokal dari Blob.</p></div>
+</div>
+
+<h2>2. File & sharing</h2><div class="grid">
+<div class="card" id="c-download"><div class="head"><b>Download file</b><span class="badge">WAIT</span></div><p>Mengunduh file TXT uji.</p><button onclick="downloadTest()">Tes download</button></div>
+<div class="card" id="c-picker"><div class="head"><b>File picker</b><span class="badge">WAIT</span></div><p>Pilih file dari penyimpanan.</p><button onclick="$('fileInput').click()">Pilih file</button><input id="fileInput" type="file" hidden></div>
+<div class="card" id="c-fileread"><div class="head"><b>File reader</b><span class="badge">WAIT</span></div><p>Baca nama, ukuran, MIME, dan isi file pilihan.</p></div>
+<div class="card" id="c-drag"><div class="head"><b>Drag & drop</b><span class="badge">WAIT</span></div><p>Uji drop file (tergantung perangkat/input).</p><div class="drop" id="drop">Lepaskan file di area ini</div></div>
+<div class="card" id="c-clipboard"><div class="head"><b>Clipboard write</b><span class="badge">WAIT</span></div><p>Menyalin teks ke clipboard.</p><button onclick="clipboardTest()">Tes copy</button></div>
+<div class="card" id="c-share"><div class="head"><b>Native share</b><span class="badge">WAIT</span></div><p>Membuka Android share sheet.</p><button onclick="shareTest()">Tes share</button></div>
+<div class="card" id="c-sharefile"><div class="head"><b>Share file</b><span class="badge">WAIT</span></div><p>Mengirim file teks lewat menu share bila didukung.</p><button onclick="shareFileTest()">Tes share file</button></div>
+<div class="card" id="c-downloadsize"><div class="head"><b>Download besar</b><span class="badge">WAIT</span></div><p>Membuat file 2 MB untuk tes alur unduhan.</p><button onclick="largeDownload()">Tes 2 MB</button></div>
+</div>
+
+<h2>3. Device & permission APIs</h2><div class="grid">
+<div class="card" id="c-vibrate"><div class="head"><b>Vibration</b><span class="badge">WAIT</span></div><p>API getaran perangkat.</p><button onclick="vibrateTest()">Tes getar</button></div>
+<div class="card" id="c-fullscreen"><div class="head"><b>Fullscreen</b><span class="badge">WAIT</span></div><p>Masuk mode layar penuh.</p><button onclick="fullscreenTest()">Tes fullscreen</button></div>
+<div class="card" id="c-orientation"><div class="head"><b>Screen orientation</b><span class="badge">WAIT</span></div><p>Deteksi rotasi dan orientasi layar.</p></div>
+<div class="card" id="c-geolocation"><div class="head"><b>Geolocation</b><span class="badge">WAIT</span></div><p>Meminta izin lokasi hanya saat tombol ditekan.</p><button onclick="geoTest()">Tes lokasi</button></div>
+<div class="card" id="c-camera"><div class="head"><b>Camera / microphone</b><span class="badge">WAIT</span></div><p>Meminta izin kamera dan mic. Stream langsung dihentikan.</p><button onclick="mediaTest()">Tes kamera & mic</button></div>
+<div class="card" id="c-notify"><div class="head"><b>Notifications</b><span class="badge">WAIT</span></div><p>Meminta izin notifikasi jika didukung.</p><button onclick="notifyTest()">Tes notifikasi</button></div>
+<div class="card" id="c-wake"><div class="head"><b>Screen Wake Lock</b><span class="badge">WAIT</span></div><p>Mencegah layar tidur sementara.</p><button onclick="wakeTest()">Tes wake lock</button></div>
+<div class="card" id="c-sensor"><div class="head"><b>Motion sensors</b><span class="badge">WAIT</span></div><p>Deteksi DeviceMotion / DeviceOrientation.</p><button onclick="sensorTest()">Tes sensor</button></div>
+<div class="card" id="c-bluetooth"><div class="head"><b>Bluetooth API</b><span class="badge">WAIT</span></div><p>Deteksi Web Bluetooth (bukan koneksi otomatis).</p></div>
+<div class="card" id="c-usb"><div class="head"><b>USB / Serial / HID</b><span class="badge">WAIT</span></div><p>Deteksi API perangkat eksternal.</p></div>
+</div>
+
+<h2>4. Graphics, media & input</h2><div class="grid">
+<div class="card" id="c-canvas"><div class="head"><b>Canvas 2D</b><span class="badge">WAIT</span></div><p>Waktu menggambar 20.000 objek.</p></div>
+<div class="card" id="c-webgl"><div class="head"><b>WebGL</b><span class="badge">WAIT</span></div><p>WebGL context dan renderer info jika tersedia.</p></div>
+<div class="card" id="c-webgpu"><div class="head"><b>WebGPU</b><span class="badge">WAIT</span></div><p>Deteksi API grafis generasi baru.</p></div>
+<div class="card" id="c-audio"><div class="head"><b>Web Audio</b><span class="badge">WAIT</span></div><p>AudioContext dan sample rate.</p><button onclick="audioTest()">Tes bunyi singkat</button></div>
+<div class="card" id="c-video"><div class="head"><b>Media playback</b><span class="badge">WAIT</span></div><p>Deteksi format video umum.</p></div>
+<div class="card" id="c-touch"><div class="head"><b>Touch & pointer</b><span class="badge">WAIT</span></div><p>Deteksi touchscreen, pointer, dan jumlah titik sentuh.</p></div>
+<div class="card" id="c-css"><div class="head"><b>Modern CSS</b><span class="badge">WAIT</span></div><p>Grid, flex, backdrop-filter, dvh, color-mix.</p></div>
+<div class="card" id="c-font"><div class="head"><b>Font & emoji</b><span class="badge">WAIT</span></div><p>Font check dan ukuran teks render.</p></div>
+</div>
+
+<h2>5. Network, PWA & runtime</h2><div class="grid">
+<div class="card" id="c-network"><div class="head"><b>Network status</b><span class="badge">WAIT</span></div><p>Online/offline dan Network Information API.</p></div>
+<div class="card" id="c-fetch"><div class="head"><b>Fetch / CORS</b><span class="badge">WAIT</span></div><p>Tes fetch ke endpoint publik sederhana.</p><button onclick="fetchTest()">Tes internet</button></div>
+<div class="card" id="c-worker"><div class="head"><b>Service Worker</b><span class="badge">WAIT</span></div><p>Registrasi worker (butuh secure context dan bukan semua file://).</p></div>
+<div class="card" id="c-install"><div class="head"><b>PWA install event</b><span class="badge">WAIT</span></div><p>beforeinstallprompt / display-mode standalone.</p></div>
+<div class="card" id="c-performance"><div class="head"><b>JavaScript performance</b><span class="badge">WAIT</span></div><p>Operasi matematika sederhana.</p></div>
+<div class="card" id="c-memory"><div class="head"><b>Device information</b><span class="badge">WAIT</span></div><p>CPU threads, RAM estimate, DPR, viewport.</p></div>
+<div class="card" id="c-observer"><div class="head"><b>Observer APIs</b><span class="badge">WAIT</span></div><p>ResizeObserver, IntersectionObserver, MutationObserver.</p></div>
+<div class="card" id="c-secure"><div class="head"><b>Security context</b><span class="badge">WAIT</span></div><p>HTTPS/secure context dan izin API.</p></div>
+</div>
+
+<h2>Device & WebView details</h2><div class="log" id="deviceInfo">Belum dijalankan.</div>
+<h2>Event log</h2><div class="log" id="log">Siap. Tes izin hanya berjalan jika tombolnya ditekan.</div>
+<p class="note">PENTING: hasil “tersedia” tidak selalu berarti fitur pasti bekerja. Beberapa API butuh HTTPS, izin Android, WebView versi baru, atau konfigurasi native dari pembuat APK. Geolocation, kamera, mikrofon, notifikasi, dan sensor tidak diaktifkan diam-diam. Tes lokasi hanya menampilkan status izin/koordinat di layar ini. Tes kamera menghentikan stream setelah pengecekan.</p>
+<footer class="note" style="text-align:center;margin-top:25px">ASEP LABS · Local-only benchmark · Tidak mengirim data benchmark ke server</footer>
+</main>
+<input id="fileInput" type="file" hidden>
+<script>
+const $=id=>document.getElementById(id);
+const weights={js:3,storage:2,session:1,indexed:2,cache:1,cookies:1,history:1,url:1,download:3,picker:2,fileread:1,drag:1,clipboard:2,share:2,sharefile:2,downloadsize:1,vibrate:1,fullscreen:2,orientation:1,geolocation:3,camera:3,notify:2,wake:1,sensor:1,bluetooth:1,usb:1,canvas:4,webgl:4,webgpu:2,audio:2,video:2,touch:2,css:2,font:1,network:1,fetch:2,worker:2,install:1,performance:3,memory:1,observer:2,secure:2};
+const results={};let installPrompt=null;
+function log(s){$('log').textContent=new Date().toLocaleTimeString()+' · '+s+'\n'+$('log').textContent}
+function result(k,state,detail){results[k]=state;const c=$('c-'+k);if(c){const b=c.querySelector('.badge');b.className='badge '+(state==='PASS'?'pass':state==='FAIL'?'fail':'info');b.textContent=state;if(detail)c.querySelector('p').textContent=detail}score()}
+function score(){let got=0,done=0,passed=0;for(const [k,w] of Object.entries(weights)){if(results[k]){done++;if(results[k]==='PASS'){got+=w;passed++}}}let val=Math.round(got/Object.values(weights).reduce((a,b)=>a+b,0)*100);$('score').textContent=done?val:'—';$('ring').style.background=`conic-gradient(var(--green) ${val*3.6}deg,#2a394a 0deg)`;$('progress').style.width=done/Object.keys(weights).length*100+'%';$('counts').textContent=done+' / '+Object.keys(weights).length+' tes dinilai · '+passed+' lulus';$('grade').textContent=done===Object.keys(weights).length?(val>=90?'EXCELLENT':val>=75?'GOOD':val>=55?'FAIR':'LIMITED'):'Skor sementara';$('summaryText').textContent=done===Object.keys(weights).length?'Semua tes sudah dinilai. Skor menunjukkan kompatibilitas fitur, bukan kualitas APK secara keseluruhan.':'Tes yang belum dijalankan belum menambah skor. Selesaikan tes manual untuk hasil lebih akurat.'}
+function supported(k,ok,yes,no){result(k,ok?'PASS':'FAIL',ok?yes:no)}
+function reset(){for(const k of Object.keys(weights)){delete results[k];const c=$('c-'+k);const b=c.querySelector('.badge');b.className='badge';b.textContent='WAIT'}$('score').textContent='—';$('grade').textContent='Belum dites';$('summaryText').textContent='Jalankan tes otomatis, lalu lakukan tes manual.';$('counts').textContent='0 / '+Object.keys(weights).length+' tes dinilai';$('progress').style.width='0%';$('ring').style.background='conic-gradient(var(--green) 0deg,#2a394a 0deg)';$('log').textContent='Hasil direset.'}
+async function run(){
+ $('run').disabled=true;log('Tes otomatis dimulai.');
+ supported('js',typeof Promise==='function'&&typeof fetch==='function'&&typeof WebAssembly==='object','ES6, Promise, fetch, WebAssembly tersedia.','Sebagian fitur JS modern tidak tersedia.');
+ for(const [k,fn] of Object.entries({
+ storage:()=>{let x='b'+Date.now();localStorage.setItem(x,'1');let ok=localStorage.getItem(x)==='1';localStorage.removeItem(x);return ok},
+ session:()=>{let x='s'+Date.now();sessionStorage.setItem(x,'1');let ok=sessionStorage.getItem(x)==='1';sessionStorage.removeItem(x);return ok},
+ cookies:()=>{document.cookie='apkbench=1; SameSite=Lax';return document.cookie.includes('apkbench=1')},
+ history:()=>!!(history.pushState&&history.replaceState),
+ url:()=>{let u=URL.createObjectURL(new Blob(['test']));let ok=u.startsWith('blob:');URL.revokeObjectURL(u);return ok},
+ cache:()=>!!(window.caches&&caches.open),
+ orientation:()=>!!(screen.orientation||window.orientation!==undefined),
+ bluetooth:()=>!!navigator.bluetooth,
+ usb:()=>!!(navigator.usb||navigator.serial||navigator.hid),
+ webgpu:()=>!!navigator.gpu,
+ touch:()=>('ontouchstart'in window||navigator.maxTouchPoints>0)&&('PointerEvent'in window),
+ video:()=>{let v=document.createElement('video');return !!(v.canPlayType('video/mp4; codecs="avc1.42E01E"')||v.canPlayType('video/webm; codecs="vp8"'))},
+ install:()=>!!installPrompt||matchMedia('(display-mode: standalone)').matches,
+ memory:()=>!!(navigator.hardwareConcurrency||navigator.deviceMemory||screen.width),
+ observer:()=>!!(window.ResizeObserver&&window.IntersectionObserver&&window.MutationObserver),
+ secure:()=>isSecureContext
+ })){
+ try{let ok=fn();supported(k,ok,k==='memory'?'Device metrics API sebagian tersedia.':k==='secure'?'Secure context: '+isSecureContext+'.':'API terdeteksi tersedia.', 'API tidak tersedia pada WebView ini.')}catch(e){result(k,'FAIL',e.message)}
+ }
+ try{let ok=await new Promise(resolve=>{if(!indexedDB)return resolve(false);let r=indexedDB.open('apkbench',1);r.onupgradeneeded=()=>r.result.createObjectStore('x');r.onsuccess=()=>{r.result.close();indexedDB.deleteDatabase('apkbench');resolve(true)};r.onerror=()=>resolve(false)});supported('indexed',ok,'IndexedDB dapat dibuka.','IndexedDB gagal dibuka.')}catch(e){result('indexed','FAIL',e.message)}
+ try{let c=await caches.open('apkbench-test');await c.put('/apkbench-test',new Response('ok'));let r=await c.match('/apkbench-test');await caches.delete('apkbench-test');supported('cache',!!r,'Cache API dapat menyimpan dan membaca data.','Cache API gagal.')}catch(e){result('cache','FAIL',e.message)}
+ try{let c=document.createElement('canvas'),x=c.getContext('2d');if(!x)throw Error('Canvas 2D tidak tersedia');c.width=500;c.height=300;let t=performance.now();for(let i=0;i<20000;i++){x.fillStyle=`hsl(${i%360},70%,50%)`;x.fillRect(i%500,(i*13)%300,4,4)}let ms=performance.now()-t;result('canvas','PASS','20.000 objek digambar dalam '+ms.toFixed(1)+' ms.')}catch(e){result('canvas','FAIL',e.message)}
+ try{let c=document.createElement('canvas'),g=c.getContext('webgl2')||c.getContext('webgl');if(!g)throw Error('WebGL context gagal dibuat');let dbg=g.getExtension('WEBGL_debug_renderer_info');let renderer=dbg?g.getParameter(dbg.UNMASKED_RENDERER_WEBGL):'disembunyikan oleh browser';result('webgl','PASS','WebGL aktif · Renderer: '+renderer)}catch(e){result('webgl','FAIL',e.message)}
+ try{let A=window.AudioContext||window.webkitAudioContext;result('audio',A?'PASS':'FAIL',A?'AudioContext tersedia.':'AudioContext tidak tersedia.')}catch(e){result('audio','FAIL',e.message)}
+ try{let n=navigator.connection;result('network',navigator.onLine?'PASS':'FAIL','Online: '+navigator.onLine+(n?' · '+(n.effectiveType||'?')+' · downlink '+(n.downlink||'?')+' Mbps':''))}catch(e){result('network','FAIL',e.message)}
+ try{let checks=[CSS.supports('display','grid'),CSS.supports('backdrop-filter','blur(2px)'),CSS.supports('height','100dvh'),CSS.supports('color','color-mix(in srgb, red, blue)')];result('css',checks.filter(Boolean).length>=3?'PASS':'FAIL',checks.filter(Boolean).length+'/4 fitur CSS modern didukung.')}catch(e){result('css','FAIL',e.message)}
+ try{let t=performance.now(),n=0;for(let i=0;i<1200000;i++)n+=Math.sqrt(i%100+1);let ms=performance.now()-t;result('performance',ms<500?'PASS':ms<1100?'INFO':'FAIL','1,2 juta operasi: '+ms.toFixed(1)+' ms.')}catch(e){result('performance','FAIL',e.message)}
+ try{let faces=['Arial','Roboto','sans-serif'];let ok=faces.some(f=>document.fonts.check('16px '+f));result('font',ok?'PASS':'INFO','Pemeriksaan font selesai; font fallback tetap dapat digunakan.')}catch(e){result('font','INFO','Font API tidak tersedia.')}
+ try{let sw='serviceWorker'in navigator;result('worker',sw&&isSecureContext?'PASS':'FAIL',sw&&isSecureContext?'Service Worker API tersedia; registrasi butuh file worker dan origin aman.':'Service Worker tidak tersedia atau bukan secure context.')}catch(e){result('worker','FAIL',e.message)}
+ $('deviceInfo').textContent=[
+ 'User agent: '+navigator.userAgent,'Platform: '+(navigator.userAgentData?.platform||navigator.platform||'?'),
+ 'Language: '+navigator.language,'Screen: '+screen.width+' × '+screen.height,'Viewport: '+innerWidth+' × '+innerHeight,
+ 'Device pixel ratio: '+devicePixelRatio,'CPU threads: '+(navigator.hardwareConcurrency||'tidak diekspos'),
+ 'RAM estimate: '+(navigator.deviceMemory||'tidak diekspos')+' GB','Online: '+navigator.onLine,
+ 'Secure context: '+isSecureContext,'Standalone: '+matchMedia('(display-mode: standalone)').matches,
+ 'Max touch points: '+(navigator.maxTouchPoints||0),'Connection: '+(navigator.connection?.effectiveType||'tidak diekspos')
+ ].join('\n');log('Tes otomatis selesai. Lanjutkan tes manual yang memiliki tombol.');$('run').disabled=false;
+}
+function downloadTest(){try{let blob=new Blob(['APK Capability Benchmark download test\n'+new Date().toISOString()],{type:'text/plain'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='apk-benchmark-test.txt';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);result('download','PASS','Perintah download dikirim. Pastikan file benar-benar tersimpan.')}catch(e){result('download','FAIL',e.message)}}
+function largeDownload(){try{let blob=new Blob([new Uint8Array(2*1024*1024)],{type:'application/octet-stream'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='apk-benchmark-2mb.bin';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);result('downloadsize','PASS','File 2 MB dibuat dan perintah download dikirim.')}catch(e){result('downloadsize','FAIL',e.message)}}
+$('fileInput').addEventListener('change',async e=>{let f=e.target.files[0];if(!f)return;result('picker','PASS','File dipilih: '+f.name+' ('+f.size+' byte).');try{let s=await f.slice(0,100).text();result('fileread','PASS','Berhasil membaca '+f.name+' · '+f.type+' · '+f.size+' byte. Cuplikan: '+s.slice(0,45))}catch(err){result('fileread','FAIL',err.message)}});
+const drop=$('drop');drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});drop.addEventListener('dragleave',()=>drop.classList.remove('over'));drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');let f=e.dataTransfer.files[0];if(f)result('drag','PASS','Drop berhasil: '+f.name+' ('+f.size+' byte).')});
+async function clipboardTest(){try{if(!navigator.clipboard?.writeText)throw Error('Clipboard API tidak tersedia (mungkin perlu HTTPS/izin WebView).');await navigator.clipboard.writeText('ASEP LABS clipboard benchmark');result('clipboard','PASS','Teks dikirim ke clipboard.')}catch(e){result('clipboard','FAIL',e.message)}}
+async function shareTest(){try{if(!navigator.share)throw Error('Web Share API tidak tersedia.');await navigator.share({title:'APK Benchmark',text:'Tes native share berhasil.'});result('share','PASS','Share sheet berhasil dipanggil.')}catch(e){result('share',e.name==='AbortError'?'INFO':'FAIL',e.name==='AbortError'?'Share sheet dibuka lalu dibatalkan.':e.message)}}
+async function shareFileTest(){try{if(!navigator.canShare||!navigator.share)throw Error('Share file API tidak tersedia.');let f=new File(['File share test dari APK Benchmark'],'benchmark-share.txt',{type:'text/plain'});if(!navigator.canShare({files:[f]}))throw Error('Browser tidak mendukung share file.');await navigator.share({files:[f],title:'Benchmark file'});result('sharefile','PASS','File berhasil dikirim ke share sheet.')}catch(e){result('sharefile',e.name==='AbortError'?'INFO':'FAIL',e.message)}}
+function vibrateTest(){if(!navigator.vibrate){result('vibrate','FAIL','Vibration API tidak tersedia.');return}let ok=navigator.vibrate([100,60,100]);result('vibrate',ok?'PASS':'INFO',ok?'Perintah getar dikirim.':'Perangkat/browser menolak getaran.')}
+async function fullscreenTest(){try{if(!document.documentElement.requestFullscreen)throw Error('Fullscreen API tidak tersedia.');await document.documentElement.requestFullscreen();result('fullscreen','PASS','Mode fullscreen aktif. Tekan Back/Esc untuk keluar.')}catch(e){result('fullscreen','FAIL',e.message)}}
+function geoTest(){if(!navigator.geolocation){result('geolocation','FAIL','Geolocation API tidak tersedia.');return}navigator.geolocation.getCurrentPosition(p=>result('geolocation','PASS','Izin berhasil. Koordinat didapat; akurasi ±'+Math.round(p.coords.accuracy)+' m.'),e=>result('geolocation','FAIL',({1:'Izin ditolak.',2:'Lokasi tidak tersedia.',3:'Permintaan timeout.'})[e.code]||e.message),{timeout:12000,maximumAge:0})}
+async function mediaTest(){try{if(!navigator.mediaDevices?.getUserMedia)throw Error('getUserMedia tidak tersedia.');let s=await navigator.mediaDevices.getUserMedia({audio:true,video:true});s.getTracks().forEach(t=>t.stop());result('camera','PASS','Izin kamera dan mikrofon berhasil. Stream langsung dihentikan.')}catch(e){result('camera','FAIL',e.name+': '+e.message)}}
+async function notifyTest(){try{if(!('Notification'in window))throw Error('Notification API tidak tersedia.');let p=Notification.permission;if(p==='default')p=await Notification.requestPermission();if(p!=='granted')throw Error('Izin notifikasi: '+p);new Notification('APK Benchmark',{body:'Tes notifikasi berhasil.'});result('notify','PASS','Notifikasi berhasil dibuat.')}catch(e){result('notify','FAIL',e.message)}}
+async function wakeTest(){try{if(!navigator.wakeLock)throw Error('Wake Lock API tidak tersedia.');let l=await navigator.wakeLock.request('screen');result('wake','PASS','Wake lock aktif sementara; dilepas otomatis dalam 3 detik.');setTimeout(()=>l.release(),3000)}catch(e){result('wake','FAIL',e.message)}}
+function sensorTest(){let supported=('DeviceMotionEvent'in window)||('DeviceOrientationEvent'in window);if(!supported){result('sensor','FAIL','API sensor gerak/orientasi tidak tersedia.');return}result('sensor','INFO','API terdeteksi. Perangkat/izin mungkin diperlukan untuk menerima data sensor.')}
+async function audioTest(){try{let A=window.AudioContext||window.webkitAudioContext;if(!A)throw Error('Web Audio tidak tersedia.');let c=new A(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);g.gain.value=.04;o.frequency.value=440;o.start();setTimeout(()=>{o.stop();c.close()},250);result('audio','PASS','AudioContext berhasil memutar nada uji singkat.')}catch(e){result('audio','FAIL',e.message)}}
+async function fetchTest(){try{let c=new AbortController(),t=setTimeout(()=>c.abort(),8000),start=performance.now();let r=await fetch('https://www.google.com/generate_204',{mode:'no-cors',cache:'no-store',signal:c.signal});clearTimeout(t);result('fetch','PASS','Fetch request terkirim dalam '+(performance.now()-start).toFixed(0)+' ms (opaque/no-cors; bukan verifikasi isi respons).')}catch(e){result('fetch','FAIL','Fetch gagal: '+e.message+' · Bisa jadi jaringan/CORS/WebView membatasi.')} }
+$('run').addEventListener('click',run);$('reset').addEventListener('click',reset);
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;result('install','PASS','beforeinstallprompt event diterima.')});
+window.addEventListener('online',()=>{log('Koneksi kembali online.');result('network','PASS','Online event diterima.')});window.addEventListener('offline',()=>{log('Perangkat offline.');result('network','FAIL','Offline event diterima.')});
+</script></body></html>
